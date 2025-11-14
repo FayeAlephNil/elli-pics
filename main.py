@@ -58,7 +58,7 @@ class AnimatePointsOnSphere(ThreeDScene):
     def load_points(file_name):
         data = []
         with open(file_name,'r') as myfile:
-            reader = csv.reader(myfile)
+            reader = csv.reader(filter(lambda row: row[0] != '#', myfile))
             for row in reader:
                 data.append([json.loads(l) for l in row])
         return data
@@ -102,7 +102,7 @@ class AnimatePointsOnSphere(ThreeDScene):
 
     def construct(self):
         rad = 2
-        data = AnimatePointsOnSphere.load_points('data/stereo_cubic_1')
+        data = AnimatePointsOnSphere.load_points('data/hesse-degeneration')
         num  = 100
         step = 2
         total_time = 10
@@ -165,6 +165,55 @@ class TestCubicPencil(ThreeDScene):
         self.begin_ambient_camera_rotation(rate=0.3)
         self.wait(10)
         self.stop_ambient_camera_rotation()
+
+class CubicPencilReal(Scene):
+    def construct(self):
+        x_range = (-6,6,1)
+        y_range = (-6,6,1)
+        func1 = lambda x,y: -x+(y-2)**3+4*(y-2)**2-5
+        func2 = lambda x,y: 5+y-x**3-4*x**2
+        graph1 = ImplicitFunction(
+            func1,
+            x_range=x_range,
+            y_range=y_range,
+            color=BLUE
+        )
+        graph1.scale(0.9)
+        graph2 = ImplicitFunction(
+            func2,
+            x_range=x_range,
+            y_range=y_range,
+            color=RED
+        )
+        graph2.scale(0.9)
+        tracker = ValueTracker(0)
+        graph_changing = ImplicitFunction(
+            lambda x, y: tracker.get_value()*func1(x,y) + func2(x,y),
+            x_range=x_range,
+            y_range=y_range,
+            color=GREEN
+        ).scale(0.9)
+        graph_changing.add_updater(lambda t: t.become(
+            ImplicitFunction(
+                lambda x, y: tracker.get_value()*func1(x,y) + func2(x,y),
+                x_range = x_range,
+                y_range = y_range,
+                color = GREEN
+            ).scale(0.9)
+        ))
+
+        plane = NumberPlane(x_range = x_range, y_range = y_range)
+        label = MathTex(f"{tracker.get_value():.2f}" + r"P+Q").to_corner(DR) 
+        label.add_updater(lambda t: t.become(
+            MathTex(f"{tracker.get_value():.2f}" + r"P+Q", color=GREEN).to_corner(DR)
+        ))
+
+        self.add(plane,graph1,graph2)
+        self.wait()
+        self.add(tracker,graph_changing,label)
+        self.play(tracker.animate(rate_func=rate_functions.ease_in_sine).set_value(5),run_time=3)
+        self.play(tracker.animate(rate_func=rate_functions.ease_out_sine).set_value(0),run_time=3)
+        self.play(tracker.animate(rate_func=rate_functions.ease_in_sine).set_value(-5),run_time=3)
 
 
 def main():

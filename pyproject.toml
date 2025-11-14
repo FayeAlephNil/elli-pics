@@ -1,7 +1,7 @@
 [project]
-name = "manimations"
+name = "elli-pics"
 version = "0.1.0"
-description = "Add your description here"
+description = "Pics of Elliptic Fibrations"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

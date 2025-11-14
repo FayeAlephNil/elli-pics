@@ -141,6 +141,23 @@ wheels = [
 ]
 
 [[package]]
+name = "elli-pics"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "manim" },
+    { name = "numpy" },
+    { name = "sympy" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "manim", specifier = ">=0.19.0" },
+    { name = "numpy", specifier = ">=2.3.3" },
+    { name = "sympy", specifier = ">=1.14.0" },
+]
+
+[[package]]
 name = "glcontext"
 version = "3.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -203,23 +220,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/52/79/29f287beebcf52464c2cfd88015720992515062dd373bd37c2ed34955cdd/manim-0.19.0.tar.gz", hash = "sha256:748115ffc1dea24940fd6d7a3edcae0ccedc3e1874ebc1f5d7e5c6d69a4f4505", size = 531082, upload-time = "2025-01-20T13:56:06.382Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/d9/30/2993e7468ff045e19a4fbfd5c540c921b6f884faebdecc9d97534882e48b/manim-0.19.0-py3-none-any.whl", hash = "sha256:aee98d359d85733ea91f459d0ad8168da03593ce2001355432b5e31ca8bcdcaf", size = 625936, upload-time = "2025-01-20T13:56:01.928Z" },
-]
-
-[[package]]
-name = "manimations"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "manim" },
-    { name = "numpy" },
-    { name = "sympy" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "manim", specifier = ">=0.19.0" },
-    { name = "numpy", specifier = ">=2.3.3" },
-    { name = "sympy", specifier = ">=1.14.0" },
 ]
 
 [[package]]
